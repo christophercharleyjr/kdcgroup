@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_issue_tree" model="ir.ui.view">
+            <field name="name">Issue Tree</field>
+            <field name="model">issue</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Issue Tree" create="false">
+                    <field name="name"/>
+                    <field name="property"/>
+                    <field name="tenant"/>
+                    <field name="landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    <field name="issue_create_date"/>
+                    <field name="issue_summary"/>
+                    <field name="cost" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    <field name="handy_man" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    <field name="paid" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    <field name="status" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_issue_form" model="ir.ui.view">
+            <field name="name">Issue Form</field>
+            <field name="model">issue</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Issue Form" create="false">
+                    <header>
+                        <button name='set_to_processing' string="Request" type="object" class="oe_highlight" groups="base.group_system,gt_rental_property_management.group_agent" attrs="{'invisible':[('status','!=','draft')]}"/>
+                        <button name='set_to_done' string="Done" type="object" class="oe_highlight" groups="base.group_system,gt_rental_property_management.group_agent" attrs="{'invisible':[('status','!=','processing')]}"/>
+                        <field name="status" widget="statusbar" groups="base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="property" attrs="{'readonly':['|',('is_tenant', '=', False),('status','!=','draft')]}"/>
+                            <field name="tenant"/>
+                            <field name="landlord" groups="base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                            <field name="issue_create_date"/>
+                            <field name="issue_summary" attrs="{'readonly':['|',('is_tenant', '=', False),('status','!=','draft')]}"/>
+                            <field name="image" attrs="{'readonly':['|',('is_tenant', '=', False),('status','!=','draft')]}" widget="image" class="oe_left oe_avatar" options="{'preview_image': 'image', 'size': [100, 100]}" />
+
+                            <!-- <field name="handy_man" groups="base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent" domain="[('is_agent','=',False),('is_tenant','=',False),('is_landlord','=',False),('id','not in',[1,3])]"/>                            
+ -->
+
+                            <field name="handy_man" groups="base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent" domain="[('is_agent','=',False),('is_tenant','=',False),('is_landlord','=',False),('id','not in',[1,3])]" context="{'worker':True}"/>
+                            
+                            <field name="cost" attrs="{'readonly':[('status','=','done')]}" groups="base.group_system,base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                            <field name="handy_man_docs" widget="image" class="oe_left oe_avatar" options="{'preview_image': 'image', 'size': [100, 100]}" groups="base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                            <!--<field name="paid" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>-->
+                            <field name="is_tenant" invisible="1"/>
+
+                        </group>
+                        <notebook>
+                            <page string="Issue Payments" groups="base.group_system,gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent">
+                                <field name="issue_payment_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="property"/>
+                                        <field name="landlord"/>
+                                        <field name="agent_paid_amount"/>
+                                        <field name="outstanding_amount_for_landlord"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_issue" model="ir.actions.act_window">
+            <field name="name">Issue</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">issue</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+       
+    </data>
+</odoo>

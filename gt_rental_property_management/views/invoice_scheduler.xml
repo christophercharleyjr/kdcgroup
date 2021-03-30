@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_scheduler_invoice_form" model="ir.ui.view">
+            <field name="name">scheduler.invoice.form</field>
+            <field name="model">scheduler.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Schedule record">
+                    <group>
+                        <field name="name"/>
+                        <field name="numberOfUpdates"/>
+                        <field name="lastModified"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- tree (list) view-->
+        <record id="view_scheduler_invoice_tree" model="ir.ui.view">
+            <field name="name">scheduler.invoice.tree</field>
+            <field name="model">scheduler.invoice</field>
+            <field name="arch" type="xml">
+                <tree string="Schedule records">
+                    <field name="name"/>
+                    <field name="numberOfUpdates"/>
+                    <field name="lastModified"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

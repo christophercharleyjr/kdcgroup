@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_property_search" model="ir.ui.view">
+            <field name="name">property Search</field>
+            <field name="model">property</field>
+            <field name="arch" type="xml">
+                <search string="Property">
+                    <field name="name"/>
+                    <field name="property_landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+                    <field name="agent"/>
+                    <field name="rent"/>
+                    <field name="type"/>
+                    <field name="epc"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter name="Property" context="{'group_by': 'name'}"/>
+                        <filter name="Landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent" context="{'group_by': 'property_landlord'}"/>
+                        <filter name="Agent" context="{'group_by': 'agent'}"/>
+                        <filter name="Property Type" context="{'group_by': 'type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_property_tree" model="ir.ui.view">
+            <field name="name">Property Tree</field>
+            <field name="model">property</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Property">
+                    <field name="name"/>
+                    <field name="property_landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+                    <field name="agent"/>
+                    <field name="rent"/>
+                    <field name="type"/>
+                    <field name="epc"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_property_form" model="ir.ui.view">
+            <field name="name">Property Form</field>
+            <field name="model">property</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Property">
+                    <header>
+                        <button name="%(action_create_tenancy)d" string="Create Tenancy seema" type="action" class="oe_highlight" groups="base.group_system,gt_rental_property_management.group_agent" attrs="{'invisible':[('status','!=','free')]}"/>
+                        <button name="%(action_create_issue)d" string="Create Issue" type="action" class="oe_highlight" groups="gt_rental_property_management.group_tenant"/>
+                        <field name="status" widget="statusbar" statusbar_visible="free,not_available"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_left" style="width: 500px;">
+                            <field name="image" widget="image" class="oe_left oe_avatar" options="{'preview_image': 'image', 'size': [100, 100]}" />
+                            <div class="oe_title">
+                                <label for="name" string="Property Name" class="oe_edit_only"/>
+                                <h1>
+                                    <field name="name" required="1" modifiers="{'required': true}"/>
+                                </h1>
+                                
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="property_landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system" options="{'no_create' : True}"/>
+                                <field name="agent"/>
+                                <field name="tenant"/>
+                                <label for="street" string="Address"/>
+                                <div>
+                                    <!--<field name="id" invisible="1"/>-->
+                                    <field name="street" placeholder="House Number..." />
+                                    <field name="street2" placeholder="Street ..."/>
+                                    <div class="address_format">
+                                        <field name="city" placeholder="City" style="width: 40%" />
+                                        <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%" options="{'no_open': True}" can_create="true" can_write="true" />
+                                        <field name="zip" placeholder="ZIP" style="width: 20%" />
+                                    </div>
+                                    <field name="country_id" placeholder="Country" class="oe_no_button" options="{'no_open': True, 'no_create': True}" can_create="true" can_write="true" />
+                                </div>
+                                <field name="gas_safety_exp_date"/>
+                                <field name="gas_safety_exp_attch" widget="image" options='{"size": [100, 100]}'/>
+
+                            </group>
+
+                            <group>
+                                <field name="rent"/>
+                                <field name="type"/>
+                                <field name="num_bed" class="oe_inline"/>
+                                <field name="num_bath" class="oe_inline"/>
+                                <field name="elect_safety_certy_attch" widget="image" options='{"size": [100, 100]}'/>
+                                <field name="epc" class="oe_inline"/>
+                            </group>
+                        </group>
+
+                  
+
+                        <!--</group>-->
+                        <notebook>
+                            <page string="Tenancy Details">
+                                <field name="tenancy_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="tenant"/>
+                                        <field name="tenancy_start"/>
+                                        <field name="tenancy_end"/>
+                                        <field name="deposit"/>
+                                        <field name="payment_day"/>
+                                        <field name="landlord_payment_day"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <page string="Payment Details" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system">
+                                <field name="payment_ids" readonly="1">
+                                    <tree>
+                                        <!-- <field name="payment_date"/> -->
+                                        <field name="name"/>
+                                        <field name="journal_id"/>
+                                        <field name="payment_method_id"/>
+                                        <field name="partner_id" string="Tenant"/>
+                                        <field name="amount" sum="Amount"/>
+                                        <field name="state"/>
+                                        <field name="company_id"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="partner_type" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                    
+                            <!--</page>-->
+                            <page string="Issues" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system">
+                                <field name="issue_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="tenant"/>
+                                        <!--<field name="property"/>-->
+                                        <field name="issue_create_date"/>
+                                        <field name="issue_summary"/>
+                                        <field name="cost" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+                                        <field name="handy_man" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+                                        <field name="paid" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+                                        <field name="status" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <page string="Issue Payments" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system">
+                                <field name="issue_payment_ids" readonly="1">
+                                    <tree>
+                                        <field name="name" string="Name"/>
+                                        <field name="issue_id" string="Issue"/>
+                                        <field name="landlord"/>
+                                        <field name="outstanding_amount_for_landlord" sum="Total"/>
+                                        <field name="amount_paid_by_landlord" sum="Total"/>
+                                        <field name="remaining_amount_to_send" sum="Total"/>
+                                        <field name="agent_paid_amount" string="Total" sum="Total"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <page string="Additional Notes" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system">
+                                <field name="notes" nolabel="1"/>
+                            </page>
+
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_property" model="ir.actions.act_window">
+            <field name="name">Property</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">property</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+             <!-- 
+             <field name="domain">[('agent.name.id','=',uid)]</field>
+           <field name="code">
+               action = {
+                            domain_force : [('agent.name.id','=',user.partner_id.id)]
+                        }
+            </field> -->
+        </record>
+
+      <!--   <menuitem name="Properties" id="menu_property" parent="menu_property_header" action="action_property" sequence="0"/>
+ -->
+    </data>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem name="Property Rental Application" id="menu_main" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord,gt_rental_property_management.group_tenant,base.group_system"/>
+        
+        <menuitem name="Landlords Details" id="menu_landlords_header" parent="menu_main" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord,base.group_system" sequence="0"/>
+
+        <menuitem name="Tenants Details" id="menu_tenants_header" parent="menu_main" groups="base.group_system,gt_rental_property_management.group_agent,gt_rental_property_management.group_tenant" sequence="1"/>
+
+        <menuitem name="Agents Details" id="menu_agents_header" parent="menu_main" groups="gt_rental_property_management.group_agent,base.group_system" sequence="2"/>
+
+        <menuitem name="Property Management" id="menu_property_header" parent="menu_main" sequence="3" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord,gt_rental_property_management.group_tenant,base.group_system"/>
+
+        <menuitem name="Properties" id="menu_property" parent="menu_property_header" action="action_property" sequence="0" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord,gt_rental_property_management.group_tenant,base.group_system"/>
+        <menuitem name="Issues" id="menu_issues" parent="menu_property_header" action="action_issue" sequence="1" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord,gt_rental_property_management.group_tenant,base.group_system"/>
+
+
+        <menuitem name="Tenancies Details" id="menu_tenancies_header" parent="menu_main" sequence="4"/>
+         <menuitem name="Tenancies" id="menu_tenancy" parent="menu_tenancies_header" sequence="2" action="action_tenancy"/>
+
+        <menuitem name="Payments" id="menu_payments" parent="menu_main" groups="gt_rental_property_management.group_agent,base.group_system" sequence="5"/>
+
+       
+
+        <menuitem name="Discuss" id="mail.mail_channel_menu_root_chat" sequence="1"
+                  action="mail.action_discuss"
+                  web_icon="mail,static/description/icon.png"
+                  groups="gt_rental_property_management.make_invisible,base.group_system"/>
+
+        <menuitem name="Inventory" id="stock.menu_stock_root" sequence="30"
+                  web_icon="stock,static/description/icon.png"
+                  groups="base.group_system"/>
+
+        <menuitem name="Invoicing" id="account.menu_finance" sequence="40"
+                  web_icon="account_invoicing,static/description/icon.png"
+                  groups="base.group_system"/>
+
+         <!-- <menuitem id="sale.sale_menu_root" name="Sales"
+                   web_icon="sale,static/description/icon.png"
+                   groups="base.group_system" sequence="7"/> -->
+
+    </data>
+</odoo>

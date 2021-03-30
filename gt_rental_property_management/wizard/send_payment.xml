@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_wizard_send_payment" model="ir.ui.view">
+            <field name="name">Send Payment</field>
+            <field name="model">send.payment</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Send Payment">
+                    <sheet>
+                        <Separator string="This wizard will allow to Charge Landlord."/>
+                        <footer>
+                            <button name="send_payment" string="Charge Landlord" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                        <group col="4">
+                            <field name="amount"/>
+                            <!--<field name="send_date"/>-->
+                            <field name="charge_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_send_payment" model="ir.actions.act_window">
+            <field name="name">Send Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">send.payment</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

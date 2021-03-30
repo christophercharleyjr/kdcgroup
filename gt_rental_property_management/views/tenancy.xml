@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_tenancy_search" model="ir.ui.view">
+            <field name="name">Tenancy Details Search</field>
+            <field name="model">tenancy</field>
+            <field name="arch" type="xml">
+                <search string="Tenancy Details">
+                    <field name="name"/>
+                    <field name="tenant"/>
+                    <field name="property"/>
+                    <field name="landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    <field name="tenancy_start"/>
+                    <field name="tenancy_end"/>
+                    <field name="deposit"/>
+                    <field name="payment_day"/>
+                    <field name="landlord_payment_day"/>
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter name="Property" context="{'group_by': 'property'}"/>
+                        <filter name="Tenant" context="{'group_by': 'tenant'}"/>
+                        <filter name="Landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent" context="{'group_by': 'landlord'}"/>
+                        <filter name="Tenancy Start" context="{'group_by': 'tenancy_start'}"/>
+                        <filter name="Tenancy End" context="{'group_by': 'tenancy_end'}"/>
+                        <filter name="Deposit" context="{'group_by': 'deposit'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_tenancy_tree" model="ir.ui.view">
+            <field name="name">Tenancy Details Tree</field>
+            <field name="model">tenancy</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <!--<tree string="Tenancy Details">-->
+                <tree string="Tenancy Details" create="false">
+                    <field name="name"/>
+                    <field name="tenant"/>
+                    <field name="property"/>
+                    <field name="landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                    <field name="deposit"/>
+                    <field name="tenancy_start"/>
+                    <field name="tenancy_end"/>
+                    <field name="payment_day"/>
+                    <field name="landlord_payment_day"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tenancy_form" model="ir.ui.view">
+            <field name="name">Tenancy Details Form</field>
+            <field name="model">tenancy</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Tenancy Details" create="false" edit="false">
+                    <!--<form string="Tenancy Details">-->
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="tenant" readonly="1"/>
+                            <field name="property" readonly="1"/>
+                            <field name="landlord" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent"/>
+                            <field name="rent"/>
+                            <field name="deposit" readonly="1"/>
+                            <field name="deposit_id" readonly="1"/>
+                        </group>
+                        <group col="4">
+                            <field name="tenancy_start" readonly="1"/>
+                            <field name="tenancy_end" readonly="1"/>
+                            <field name="payment_day" readonly="1"/>
+                            <field name="landlord_payment_day" readonly="1"/>
+                            <!--<field name="is_agent"/>-->
+                        </group>
+
+                        <group groups="base.group_erp_manager,gt_rental_property_management.group_agent">
+                            <separator string="Commission Details"/>
+                            <field name="commission_type" widget="radio" readonly="1"/>
+                            <field name="percent" readonly="1" attrs="{'invisible': [('commission_type','=','fix')], 'required': [('commission_type','=','percent')]}"/>
+                            <field name="commission" readonly="1" attrs="{'readonly': [('commission_type','=','percent')]}"/>
+                        </group>
+
+                        <notebook>
+                            <page name="invoice_details" string="Invoicing" invisible="1">
+                                <field name="invoice_line_ids" readonly="1">
+                                    <tree>
+                                        <field name="inv_id" invisible="1"/>
+                                        <field name="inv_no"/>
+                                        <field name="inv_start_date"/>
+                                        <field name="inv_end_date"/>
+                                        <field name="inv_amount"/>
+                                        <field name="invoice_id"/>
+                                        <!--<field name="invoice_id_state"/>-->
+
+                                        <!--<field name="inv_id" invisible="1"/>-->
+                                        <!--<field name="inv_no" attrs="{'invisible': [('invoice_id', '=', False)]}"/>-->
+                                        <!--<field name="inv_start_date" attrs="{'invisible': [('invoice_id', '=', False)]}"/>-->
+                                        <!--<field name="inv_end_date" attrs="{'invisible': [('invoice_id', '=', False)]}"/>-->
+                                        <!--<field name="inv_amount" attrs="{'invisible': [('invoice_id', '=', False)]}"/>-->
+                                        <!--<field name="invoice_id" attrs="{'invisible': [('invoice_id', '=', False)]}"/>-->
+                                        <!--&lt;!&ndash;<field name="invoice_id_state"/>&ndash;&gt;-->
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <page name="invoice" string="Invoicing">
+                                <field name="invoice_ids" mode="tree" readonly="1">
+                                    <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Invoice" open="false" create="false" edit="false">
+                                        <field name="partner_id" groups="base.group_user" string="Customer"/>
+                                        <field name="invoice_date"/>
+                                        <field name="move_type"/>
+                                        <field name="commercial_partner_id" invisible="1"/>
+                                        <field name="ref" invisible="1"/>
+                                        <field name="name" invisible="1"/>
+                                        <field name="journal_id" invisible="1"/>
+                                        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                        <field name="user_id"/>
+                                        <field name="invoice_payment_term_id"/>
+                                        <field name="invoice_origin"/>
+                                        <field name="amount_total_signed" string="Total" sum="Total"/>
+                                        <field name="amount_residual" string="Amount Due" sum="Amount Due"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_currency_id" invisible="1"/>
+                                        <field name="state"/>
+                                        <field name="move_type" invisible="context.get('type',True)"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="Payment" string="Payments" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord">
+                                <field name="payment_ids">
+                                    <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']" create="false" edit="false">
+                                        <field name="payment_source"/>
+                                        <!-- <field name="payment_date"/> -->
+                                        <field name="name"/>
+                                        <field name="journal_id"/>
+                                        <field name="payment_method_id"/>
+                                        <field name="partner_id" string="Customer"/>
+                                        <field name="rent"/>
+                                        <field name="agent_commission"/>
+                                        <field name="issue_deduction"/>
+                                        <field name="amount" sum="Amount"/>
+                                        <field name="state"/>
+                                        <field name="company_id" groups="base.group_multi_company"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="partner_type" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tenancy" model="ir.actions.act_window">
+            <field name="name">Tenancy Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tenancy</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+
+       <!--  <menuitem name="Tenancies" id="menu_tenancy" parent="menu_tenancies_header" sequence="2" action="action_tenancy"/> -->
+
+    </data>
+</odoo>

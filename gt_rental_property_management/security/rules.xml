@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!--Rules for Landlord Table-->
+
+         <record model="ir.rule" id="admin_rule_for_landlord_details">
+            <field name="name">admin_rule_for_landlord_details</field>
+            <field name="model_id" ref="model_landlord_details"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+        </record>
+        <record model="ir.rule" id="agent_rule_for_landlord_details">
+            <field name="name">agent_rule_for_landlord_details</field>
+            <field name="model_id" ref="model_landlord_details"/>
+            <field name="domain_force">[('name.user_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+        <record model="ir.rule" id="landlord_rule_for_landlord_details">
+            <field name="name">landlord_rule_for_landlord_details</field>
+            <field name="model_id" ref="model_landlord_details"/>
+            <field name="domain_force">[('name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_landlord'))]"/>
+        </record>
+
+        <!--Rules for Agent Table-->
+
+        <!-- *** admin can not create agents so commented and after all agents visible to all -->
+        <record model="ir.rule" id="agent_rule_for_agent_details">
+            <field name="name">agent_rule_for_agent_details</field>
+            <field name="model_id" ref="model_agent_details"/>
+            <!-- <field name="domain_force">['|',('name.id','=',user.partner_id.id),(1,'=',1)]</field> -->
+            <field name="domain_force">[('name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+
+         <record model="ir.rule" id="admin_rule_for_agent">
+            <field name="name">admin_rule_for_agent_details</field>
+            <field name="model_id" ref="model_agent_details"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+            <field eval="1" name="perm_read"/>
+            <field eval="1" name="perm_write"/>
+            <field eval="1" name="perm_create"/>
+            <field eval="1" name="perm_unlink"/> 
+        </record> 
+
+        <!--Rules for Tenant Detail Table-->
+        <record model="ir.rule" id="admin_rule_for_tenant_details">
+            <field name="name">admin_rule_for_tenant_details</field>
+            <field name="model_id" ref="model_tenant_details"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+        </record>
+
+        <record model="ir.rule" id="agent_rule_for_tenant_details">
+            <field name="name">agent_rule_for_tenant_details</field>
+            <field name="model_id" ref="model_tenant_details"/>
+            <field name="domain_force">[('name.user_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+        <record model="ir.rule" id="tenant_rule_for_tenant_details">
+            <field name="name">tenant_rule_for_tenant_details</field>
+            <field name="model_id" ref="model_tenant_details"/>
+            <field name="domain_force">[('name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_tenant'))]"/>
+        </record>
+
+        <!--Rules for Tenancy Detail Table-->
+        <record model="ir.rule" id="admin_rule_for_tenancy">
+            <field name="name">admin_rule_for_tenancy</field>
+            <field name="model_id" ref="model_tenancy"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+        </record>
+
+        <record model="ir.rule" id="agent_rule_for_tenancy">
+            <field name="name">agent_rule_for_tenancy</field>
+            <field name="model_id" ref="model_tenancy"/>
+            <field name="domain_force">[('property.agent.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+        <record model="ir.rule" id="tenant_rule_for_tenancy">
+            <field name="name">tenant_rule_for_tenancy</field>
+            <field name="model_id" ref="model_tenancy"/>
+            <field name="domain_force">[('tenant.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_tenant'))]"/>
+        </record>
+        <record model="ir.rule" id="landlord_rule_for_tenancy">
+            <field name="name">landlord_rule_for_tenancy</field>
+            <field name="model_id" ref="model_tenancy"/>
+            <field name="domain_force">[('landlord.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_landlord'))]"/>
+        </record>
+
+        <!--Rules for Property Table-->
+
+    <!-- *** agent can not create property so comment and after that all prop visoble to all agents -->
+       <record model="ir.rule" id="agent_rule_for_property">
+            <field name="name">agent_rule_for_property</field>
+            <field name="model_id" ref="model_property"/>
+            <field name="domain_force">[('agent.name','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record> 
+
+         <record model="ir.rule" id="admin_rule_for_property">
+            <field name="name">admin_rule_for_property</field>
+            <field name="model_id" ref="model_property"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+            <field eval="1" name="perm_read"/>
+            <field eval="1" name="perm_write"/>
+            <field eval="1" name="perm_create"/>
+            <field eval="1" name="perm_unlink"/> 
+        </record> 
+
+
+        <record model="ir.rule" id="landlord_rule_for_property">
+            <field name="name">landlord_rule_for_property</field>
+            <field name="model_id" ref="model_property"/>
+            <field name="domain_force">[('property_landlord.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_landlord'))]"/>
+        </record>
+         <record model="ir.rule" id="tenant_rule_for_property">
+            <field name="name">tenant_rule_for_property</field>
+            <field name="model_id" ref="model_property"/>
+            <field name="domain_force">[('tenant.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_tenant'))]"/>
+        </record>
+
+        <!--Rules for Issue Table-->
+
+        <!-- issue not dislay in agent issues menu so comment -->
+        <record model="ir.rule" id="admin_rule_for_issue">
+            <field name="name">admin_rule_for_issue</field>
+            <field name="model_id" ref="model_issue"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+        </record>
+
+        <record model="ir.rule" id="agent_rule_for_issue">
+            <field name="name">agent_rule_for_issue</field>
+            <field name="model_id" ref="model_issue"/>
+            <!-- field name="domain_force">['|',('property.agent.name.id','=',user.partner_id.id),(1,'=',1)]</field> -->
+            <field name="domain_force">[('property.agent.name','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+
+        <record model="ir.rule" id="landlord_rule_for_issue">
+            <field name="name">landlord_rule_for_issue</field>
+            <field name="model_id" ref="model_issue"/>
+            <field name="domain_force">[('landlord.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_landlord'))]"/>
+        </record>
+        <record model="ir.rule" id="tenant_rule_for_issue">
+            <field name="name">tenant_rule_for_issue</field>
+            <field name="model_id" ref="model_issue"/>
+            <field name="domain_force">[('tenant.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_tenant'))]"/>
+        </record>
+
+        <!--Rules for Issue Payment Table-->
+
+        <!-- no access to issues.payment to agent so comment  -->
+        <record model="ir.rule" id="admin_rule_for_issue_payment">
+            <field name="name">admin_rule_for_issue_payment</field>
+            <field name="model_id" ref="model_issue_payment"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+        </record>
+
+        <record model="ir.rule" id="agent_rule_for_issue_payment">
+            <field name="name">agent_rule_for_issue_payment</field>
+            <field name="model_id" ref="model_issue_payment"/>
+            <!-- <field name="domain_force">['|',('property.agent.name.id','=',user.partner_id.id),(1,'=',1)]</field> -->
+            <field name="domain_force">[('property.agent.name','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+
+        <record model="ir.rule" id="landlord_rule_for_issue_payment">
+            <field name="name">landlord_rule_for_issue_payment</field>
+            <field name="model_id" ref="model_issue_payment"/>
+            <field name="domain_force">[('landlord.name.id','=',user.partner_id.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_landlord'))]"/>
+        </record>
+
+
+         <record model="ir.rule" id="admin_rule_for_account_invoice">
+            <field name="name">admin_rule_for_account_invoice</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_system'))]"/>
+        </record>
+         <record model="ir.rule" id="agent_rule_for_account_invoice">
+            <field name="name">agent_rule_for_account_invoice</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('gt_rental_property_management.group_agent'))]"/>
+        </record>
+
+        
+
+
+    </data>
+</odoo>

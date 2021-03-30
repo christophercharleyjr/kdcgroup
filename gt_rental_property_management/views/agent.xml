@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_agent_details_search" model="ir.ui.view">
+            <field name="name">Agent Details Search</field>
+            <field name="model">agent.details</field>
+            <field name="arch" type="xml">
+                <search string="Agent Details">
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="bdate"/>
+                    <field name="phone_number"/>
+                    <field name="email_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="Agent" context="{'group_by': 'name'}"/>
+                        <filter name="Gender" context="{'group_by': 'gender'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="view_agent_details_tree" model="ir.ui.view">
+            <field name="name">Agent Details Tree</field>
+            <field name="model">agent.details</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Agent Details">
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                    <field name="email_id"/>
+                    <field name="gender"/>
+                    <field name="bdate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_agent_details_form" model="ir.ui.view">
+            <field name="name">Agent Details Form</field>
+            <field name="model">agent.details</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Agent Details">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" context="{'agent':True}" domain="[('name','=',uid)]"/>
+                                <!-- <field name="name" context="{'agent':True}" domain="[('is_agent','=',True)]" options="{'no_create_edit': True}"/> -->
+                                <!--<field name="name" options="{'no_create': True}"/>-->
+                                <label for="street" string="Address"/>
+                                <div>
+                                    <field name="street" placeholder="House Number..." />
+                                    <field name="street2" placeholder="Street ..."/>
+                                    <div class="address_format">
+                                        <field name="city" placeholder="City" style="width: 40%" />
+                                        <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%" options="{'no_open': True}" can_create="true" can_write="true" />
+                                        <field name="zip" placeholder="ZIP" style="width: 20%" />
+                                    </div>
+                                    <field name="country_id" placeholder="Country" class="oe_no_button" options="{'no_open': True, 'no_create': True}" can_create="true" can_write="true" />
+                                </div>
+                            </group>
+                            <group>
+                                <field name="bdate"/>
+                                <field name="phone_number"/>
+                                <field name="gender"/>
+                                <field name="email_id"/>
+                                <!--<field name="payment_term_id"/>-->
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Payment Details" groups="base.group_system,gt_rental_property_management.group_agent">
+                                <field name="payment_ids" readonly="1">
+                                    <tree>
+                                        <!-- <field name="payment_date"/> -->
+                                        <field name="name"/>
+                                        <field name="journal_id"/>
+                                        <field name="payment_method_id"/>
+                                        <field name="partner_id" string="Tenant"/>
+                                        <field name="amount" sum="Amount"/>
+                                        <field name="state"/>
+                                        <field name="company_id"/>
+                                        <!--<field name="company_id" groups="base.group_multi_company"/>-->
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="partner_type" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_agent_details" model="ir.actions.act_window">
+            <field name="name">Agent Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">agent.details</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Agents" id="menu_agent_details" parent="menu_agents_header" sequence="2" groups="gt_rental_property_management.group_agent,base.group_system" action="action_agent_details"/>
+
+    </data>
+</odoo>

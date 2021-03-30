@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_issue_payment_search" model="ir.ui.view">
+            <field name="name">Issue Payment Search</field>
+            <field name="model">issue.payment</field>
+            <field name="arch" type="xml">
+                <search string="Property">
+                    <field name="name"/>
+                    <field name="issue_id"/>
+                    <field name="property"/>
+                    <field name="landlord"/>
+                    <field name="agent_paid_amount"/>
+                    <field name="outstanding_amount_for_landlord"/>
+                    <field name="status"/>
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter name="Property" context="{'group_by': 'property'}"/>
+                        <filter name="Issue" context="{'group_by': 'issue_id'}"/>
+                        <filter name="Landlord" context="{'group_by': 'landlord'}"/>
+                        <filter name="State" context="{'group_by': 'status'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="view_issue_payment_tree" model="ir.ui.view">
+            <field name="name">Issue Payment Tree</field>
+            <field name="model">issue.payment</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Issue Payment Tree" create="false">
+                    <field name="name"/>
+                    <field name="issue_id"/>
+                    <field name="property"/>
+                    <field name="landlord"/>
+                    <field name="agent_paid_amount"/>
+                    <field name="remaining_amount_to_send"/>
+                    <field name="outstanding_amount_for_landlord"/>
+                    <field name="status"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="view_issue_payment_form" model="ir.ui.view">
+            <field name="name">Issue Payment Form</field>
+            <field name="model">issue.payment</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Issue Payment Form" create="false">
+                    <header>
+                        <button name="%(action_send_payment)d" string="Charge Landlord" type="action" class="oe_highlight" groups="base.group_system,gt_rental_property_management.group_agent" attrs="{'invisible':[('remaining_amount_to_send','=',0)]}"/>
+                        <!--<button name ="%(action_send_payment)d" string="Send Payment" type="action" class="oe_highlight" groups="gt_rental_property_management.group_agent" attrs="{'invisible':[('status','!=','draft')]}"/>-->
+                        <field name="status" widget="statusbar" statusbar_visible="draft,partial,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="property"/>
+                            <field name="landlord"/>
+                            <field name="agent_paid_amount"/>
+                            <field name="outstanding_amount_for_landlord"/>
+                            <field name="issue_id"/>
+                            <field name="remaining_amount_to_send"/>
+                        </group>
+                        <notebook>
+                            <page name="landlord_payments" string="Landlord Payments">
+                                <field name="landlord_pay_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <!--<field name="send_date"/>-->
+                                        <field name="charge_date"/>
+                                        <field name="amount"/>
+                                        <field name="payment_record_created" invisible="1"/>
+                                        <!--<field name="status"/>-->
+                                        <!--<button name='payment_done' type='object' string="Done" class="oe_highlight" attrs="{'invisible':[('status','!=','draft')]}"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_issue_payment" model="ir.actions.act_window">
+            <field name="name">Issue Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">issue.payment</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!--<menuitem name="issue_payments" id="menu_issue_payments" parent="menu_property_header" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent" action="action_issue_payment" sequence="1"/>-->
+        <menuitem name="Issue Payments" id="menu_issue_payments" parent="menu_property_header" action="action_issue_payment" sequence="1" groups="gt_rental_property_management.group_landlord,gt_rental_property_management.group_agent,base.group_system"/>
+    </data>
+</odoo>

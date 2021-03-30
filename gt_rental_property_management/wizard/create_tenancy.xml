@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_wizard_create_tenancy" model="ir.ui.view">
+            <field name="name">Create Tenancy</field>
+            <field name="model">create.tenancy</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Create Tenancy">
+                    <sheet>
+                        <Separator string="This wizard will allow to Create Tenancy."/>
+                        <footer>
+                            <button name="create_tenancy" string="Create Tenancy" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                        <group col="4">
+                            <field name="tenant" options="{'no_create' : True}"/>
+                            <field name="tenancy_start"/>
+                            <field name="deposit"/>
+                            <field name="rent"/>
+                            <field name="tenancy_end"/>
+                            <field name="deposit_id"/>
+                            <field name="payment_day"/>
+                            <field name="landlord_payment_day"/>
+                        </group>
+                        <group>
+                            <separator string="Commission Details"/>
+                            <field name="commission_type" widget="radio"/>
+
+                            <field name="fix_amount" attrs="{'invisible': [('commission_type','=','percent')], 'required': [('commission_type','=','fix')]}"/>
+
+                            <field name="percent" attrs="{'invisible': [('commission_type','=','fix')], 'required': [('commission_type','=','percent')]}"/>
+
+                            <field name="commission"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_create_tenancy" model="ir.actions.act_window">
+            <field name="name">Create Tenancy</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.tenancy</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <!-- <field name="groups_id" eval="[(6, 0, [ref('gt_rental_property_management.group_agent'), ref('base.group_system')])]"/> -->
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

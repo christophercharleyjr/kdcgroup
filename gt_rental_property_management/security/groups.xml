@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="res.groups" id="group_agent">
+            <field name="name">Estate Agent</field>
+        </record>
+
+        <record model="res.groups" id="group_landlord">
+            <field name="name">Property Landlord</field>
+        </record>
+
+        <record model="res.groups" id="group_tenant">
+            <field name="name">Tenant</field>
+        </record>
+
+        <record id="make_invisible" model="res.groups">
+            <field name="name">Invisible</field>
+        </record>
+    </data>
+</odoo>

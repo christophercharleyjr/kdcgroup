@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_landlord_search" model="ir.ui.view">
+            <field name="name">Landlord Search</field>
+            <field name="model">landlord.details</field>
+            <field name="arch" type="xml">
+                <search string="Landlord Details">
+                    <field name="name"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                    <field name="phone_number"/>
+                    <field name="email_id"/>
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter name="Landlord" context="{'group_by': 'name'}"/>
+                        <filter name="Phone" context="{'group_by': 'phone_number'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_landlord_tree" model="ir.ui.view">
+            <field name="name">Landlord Details Tree</field>
+            <field name="model">landlord.details</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Landlord Details">
+                    <field name="name"/>
+                    <!--<field name="first_name"/>-->
+                    <!--<field name="last_name"/>-->
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                    <field name="phone_number"/>
+                    <field name="email_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_landlord_form" model="ir.ui.view">
+            <field name="name">Landlord Details Form</field>
+            <field name="model">landlord.details</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Landlord Details">
+                    <sheet>
+                        <group>
+                            <group>
+                                <!--<field name="name" domain="[('group', '=', 'group_landlord')]"/>-->
+                                <!--<field name="name" context="{'landlord':True}" domain="[('is_landlord','=',True)]"/>-->
+                                <field name="name" context="{'landlord':True}"/>
+                                <!--<field name="name" options="{'no_create': True}"/>-->
+                                <label for="street" string="Address"/>
+                                <div>
+                                    <field name="street" placeholder="Street..." />
+                                    <field name="street2" placeholder="Street 2..."/>
+                                    <div class="address_format">
+                                        <field name="city" placeholder="City" style="width: 40%" />
+                                        <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%" options="{'no_open': True}" can_create="true" can_write="true" />
+                                        <field name="zip" placeholder="ZIP" style="width: 20%" />
+                                    </div>
+                                    <field name="country_id" placeholder="Country" class="oe_no_button" options="{'no_open': True, 'no_create': True}" can_create="true" can_write="true" />
+                                </div>
+                            </group>
+                            <group>
+                                <!--<field name="last_name"/>-->
+                                <field name="phone_number"/>
+                                <field name="email_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Tenancy Details">
+                                <field name="tenancy_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="tenant"/>
+                                        <field name="property"/>
+                                        <!--<field name="landlord"/>-->
+                                        <field name="tenancy_start"/>
+                                        <field name="tenancy_end"/>
+                                        <field name="deposit"/>
+                                        <field name="payment_day"/>
+                                        <field name="landlord_payment_day"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <page string="Payment Details">
+                                <field name="payment_ids" readonly="1">
+                                    <tree>
+                                        <!-- <field name="payment_date"/> -->
+                                        <field name="name"/>
+                                        <field name="journal_id"/>
+                                        <field name="payment_method_id"/>
+                                        <field name="partner_id" string="Tenant"/>
+                                        <field name="amount" sum="Amount"/>
+                                        <field name="state"/>
+                                        <field name="company_id"/>
+                                        <!--<field name="company_id" groups="base.group_multi_company"/>-->
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="partner_type" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_landlord" model="ir.actions.act_window">
+            <field name="name">Landlord Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">landlord.details</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Landlords" id="menu_landlords" parent="menu_landlords_header" groups="gt_rental_property_management.group_agent,gt_rental_property_management.group_landlord,base.group_system" sequence="0" action="action_landlord"/>
+
+    </data>
+</odoo>

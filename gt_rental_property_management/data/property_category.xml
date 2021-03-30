@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="1">
+		 <!--Category Property-->
+        <record id="category_property" model="product.category">
+            <field name="name">Property</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+	</data>
+</odoo>

@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+         <!--Category Property-->
+        <record id="category_property" model="product.category">
+            <field name="name">Property</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+    </data>
+</odoo>

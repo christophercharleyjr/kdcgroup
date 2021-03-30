@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--<record id="view_landlord_due_payment" model="ir.ui.view">-->
+            <!--<field name="name">Landlord Due Payment Tree</field>-->
+            <!--<field name="model">issue.payment</field>-->
+            <!--<field name="type">tree</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<tree string="Landlord Due Payment Tree" create="false">-->
+                    <!--<field name="issue_id"/>-->
+                    <!--<field name="name"/>-->
+                    <!--<field name="property"/>-->
+                    <!--<field name="landlord"/>-->
+                    <!--<field name="outstanding_amount_for_landlord"/>-->
+                    <!--<field name="agent_paid_amount" string="Total"/>-->
+                    <!--&lt;!&ndash;<field name="status"/>&ndash;&gt;-->
+                <!--</tree>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <!--<record id="action_landlord_due_payment" model="ir.actions.act_window">-->
+            <!--<field name="name">Landlord Due Payment</field>-->
+            <!--<field name="type">ir.actions.act_window</field>-->
+            <!--<field name="res_model">issue.payment</field>-->
+            <!--<field name="domain">[('status', '=', 'draft')]</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_id" ref="view_landlord_due_payment"/>-->
+            <!--<field name="view_mode">tree</field>-->
+        <!--</record>-->
+
+
+        <record id="view_account_payment_tree_custom" model="ir.ui.view">
+            <field name="name">account.payment.tree</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']" create="false" edit="false">
+                    <field name="payment_source"/>
+                    <!-- <field name="payment_date"/> -->
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="payment_method_id"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="amount" sum="Amount"/>
+                    <field name="state"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="partner_type" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_landlord_due_payment" model="ir.actions.act_window">
+            <field name="name">Landlord Due Payment</field>
+            <field name="res_model">account.payment</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier'}</field>
+            <field name="domain">[('partner_type', '=', 'supplier'),('state','=','draft')]</field>
+            <field name="view_id" ref="view_account_payment_tree_custom"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Click to register a payment
+                </p><p>
+                  Payments are used to register liquidity movements (send, collect or transfer money).
+                  You can then process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Landlord Due Payments" id="menu_landlord_due_payments" parent="menu_payments" action="action_landlord_due_payment" groups="gt_rental_property_management.group_agent,base.group_system" sequence="0"/>
+
+        <record id="invoice_tree_custom" model="ir.ui.view">
+            <field name="name">account.move.tree</field>
+            <field name="model">account.move</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" create="false" string="Invoice">
+                    <field name="partner_id" groups="base.group_user" string="Customer"/>
+                    <field name="invoice_date"/>
+                    <field name="move_type"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="ref" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="user_id"/>
+                    <field name="invoice_payment_term_id"/>
+                    <field name="invoice_origin"/>
+                    <field name="amount_total_signed" string="Total" sum="Total"/>
+                    <field name="amount_residual" string="Amount Due" sum="Amount Due"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="move_type" invisible="context.get('type',True)"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_tenancy_due_payment" model="ir.actions.act_window">
+            <field name="name">Tenant Invoices</field>
+            <field name="res_model">account.move</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="invoice_tree_custom"/>
+            <field name="domain">[('move_type','=','out_invoice'),('state','!=','paid')]</field>
+            <field name="context">{'move_type':'out_invoice', 'journal_type': 'sale'}</field>
+            <!-- <field name="search_view_id" ref="account.view_account_invoice_filter_inherit_invoices"/> -->
+        </record>
+        <menuitem name="Tenancy Due Payments" id="menu_tenancy_due_payments" parent="menu_payments" action="action_tenancy_due_payment" groups="gt_rental_property_management.group_agent,base.group_system" sequence="1"/>
+
+    </data>
+</odoo>

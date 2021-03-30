@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="res_partner" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <!-- <button name="toggle_active" position="attributes">
+                    <attribute name="groups">base.group_system,gt_rental_property_management.group_agent</attribute>
+                </button> -->
+
+                <field name="email" position="attributes">
+                    <attribute name="required">True</attribute>
+                </field>
+
+                <field name="user_id" position="attributes">
+                    <attribute name="readonly">True</attribute>
+                </field>
+
+                <field name="website" position="after">
+                     <field name="login" groups="base.group_system,gt_rental_property_management.group_agent"/>
+                     <field name="password" groups="base.group_system,gt_rental_property_management.group_agent"/>
+                     <field name="is_agent" invisible="1"/>
+                     <field name="is_tenant" invisible="1"/>
+                     <field name="is_landlord" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+ <!--        <record id="res_partner_payment_forms" model="ir.ui.view">
+            <field name="name">res.partner.payment.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="payment.view_partners_form_payment_defaultcreditcard"/>
+            <field name="arch" type="xml">
+
+                <xpath  expr="//class[@name='o_form_field o_stat_info']" position="replace">
+                    <div class="o_stat_text" groups="base.group_system,gt_rental_property_management.group_agent">
+                        <span class="o_stat_text" groups="base.group_system,gt_rental_property_management.group_agent">Credit card(s)</span>
+                    </div>
+                </xpath>
+
+            </field>
+        </record> -->
+
+    </data>
+</odoo>
